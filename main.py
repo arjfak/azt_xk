@@ -16,21 +16,37 @@ libraries = [
     "user_agents",
 ]
 
+specific_imports = [
+    ("faker", "Faker"),
+    ("user_agents", "parse"),
+]
+
 missing_libs = []
 
+# Check general modules
 for lib in libraries:
     try:
         __import__(lib)
     except ImportError:
         missing_libs.append(lib)
 
+# Check specific imports
+for module, attr in specific_imports:
+    try:
+        mod = __import__(module, fromlist=[attr])
+        getattr(mod, attr)
+    except ImportError:
+        missing_libs.append(f"{module} ({attr})")
+    except AttributeError:
+        missing_libs.append(f"{module} (missing {attr})")
+
 if missing_libs:
-    print("The following libraries are not installed:")
+    print("The following libraries or attributes are not installed or missing:")
     for lib in missing_libs:
         print(f"- {lib}")
     print("Please install them using pip.")
 else:
-    print("All libraries are installed!")
+    print("All libraries and attributes are installed!")
 
 
 
