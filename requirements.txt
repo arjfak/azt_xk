@@ -1,0 +1,7 @@
+requests
+stripe
+python-telegram-bot
+asyncio
+faker
+user-agents
+pycryptodome
